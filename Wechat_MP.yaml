@@ -1,0 +1,56 @@
+# 元信息
+meta:
+  author: "adamhuan"
+  desc: "微信公众号 - 爬虫"
+
+# 微信公众号设定
+wechat_mp:
+
+  # 公众号名称
+  mp_name: "Nephilim"
+
+  # 合集列表
+  collections:
+    - name: "Python"
+      url: "https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzI0NjI2Nzg1Ng==&action=getalbum&album_id=2604643599875604481#wechat_redirect"
+
+    - name: "MySQL"
+      url: "https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzI0NjI2Nzg1Ng==&action=getalbum&album_id=2604620702314430464#wechat_redirect"
+
+    - name: "Cloudera"
+      url: "https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzI0NjI2Nzg1Ng==&action=getalbum&album_id=2604619754703716353#wechat_redirect"
+
+    - name: "Vue.JS"
+      url: "https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzI0NjI2Nzg1Ng==&action=getalbum&album_id=2641696104832598018#wechat_redirect"
+
+    - name: "Webpack"
+      url: "https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzI0NjI2Nzg1Ng==&action=getalbum&album_id=2693638439640006662#wechat_redirect"
+
+    - name: "烹饪【思考与理念】"
+      url: "https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzI0NjI2Nzg1Ng==&action=getalbum&album_id=2611934822357303298#wechat_redirect"
+
+    - name: "烹饪【调味品】"
+      url: "https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzI0NjI2Nzg1Ng==&action=getalbum&album_id=2611386114783870977#wechat_redirect"
+
+    - name: "烹饪【食谱】"
+      url: "https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzI0NjI2Nzg1Ng==&action=getalbum&album_id=2605040820764835842#wechat_redirect"
+
+    - name: "烹饪【刀工】"
+      url: "https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzI0NjI2Nzg1Ng==&action=getalbum&album_id=2604756439605215234#wechat_redirect"
+
+    - name: "烹饪【雕刻】"
+      url: "https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzI0NjI2Nzg1Ng==&action=getalbum&album_id=2719456958025596930#wechat_redirect"
+
+    - name: "歌曲"
+      url: "https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzI0NjI2Nzg1Ng==&action=getalbum&album_id=2612226984605155330#wechat_redirect"
+
+    - name: "英语"
+      url: "https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzI0NjI2Nzg1Ng==&action=getalbum&album_id=2611386115102638084#wechat_redirect"
+
+    - name: "读书"
+      url: "https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzI0NjI2Nzg1Ng==&action=getalbum&album_id=2616568787093454851#wechat_redirect"
+
+# 爬取设定
+converge:
+  # 爬取后存放路径
+  converge_to: ""

@@ -1,0 +1,14 @@
+meta:
+  author: "adamhuan"
+  desc: "Used for Test."
+
+people:
+  - name: "allah"
+    sex: "girl"
+    age: "28"
+    location: "GuangXi"
+
+  - name: "白可"
+    sex: "girl"
+    age: "26"
+    location: "WuHan"
