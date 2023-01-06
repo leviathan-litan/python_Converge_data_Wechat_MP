@@ -52,5 +52,8 @@ wechat_mp:
 
 # 爬取设定
 converge:
-  # 爬取后存放路径
-  converge_to: ""
+  path:
+    # 爬取后存放路径 - 基础路径
+    converge_to: "/Users/adamhuan/adamhuan_data/wechat_mp_data"
+    # 页面资源的路径 - 子目录后缀
+    page_resource_suffix: "___assset"

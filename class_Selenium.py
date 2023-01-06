@@ -4,8 +4,17 @@
 # 阶段【导入】
 # ================================
 
+import os.path
+import time
+
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.expected_conditions import visibility_of_element_located
+from selenium.webdriver.support.ui import WebDriverWait
+
+import class_YAML
+import class_OS
+import class_Network
 
 # ================================
 # 阶段【类定义】
@@ -14,7 +23,299 @@ from selenium.webdriver.common.by import By
 class class_selenium:
 
     def __init__(self):
-        pass
+
+        self.obj_os = class_OS.class_os()
+        self.obj_network = class_Network.class_request()
+
+        file_yaml = "Wechat_MP.yaml"
+        obj_yaml = class_YAML.class_yaml()
+
+        self.path_converge_to_base = obj_yaml.yaml_param_get_value(
+            yaml_file=file_yaml,
+            key_path="converge/path/converge_to",
+            split_with="/"
+        )
+
+        self.path_page_resource_suffix = obj_yaml.yaml_param_get_value(
+            yaml_file=file_yaml,
+            key_path="converge/path/page_resource_suffix",
+            split_with="/"
+        )
+
+        self.obj_os.execute_os_command_local('mkdir -p %s' % self.path_converge_to_base)
+
+        print("路径 - 存放总路径【%s】" % self.path_converge_to_base)
+
+    # 分析HTML中的元素，并反馈列表
+    def HTML_parse_TAG_return_list(self, selenium_driver, TAG_name, attr_name):
+
+        data_return = []
+
+        element_link_list = selenium_driver.find_elements(By.TAG_NAME, TAG_name)
+
+        for_element_link_list_item_cursor = 1
+        for element_link_list_item in element_link_list:
+
+            element_link_list_item_target = element_link_list_item.get_attribute(attr_name)
+
+            # print(")))))))))))))))))))) %d" % for_element_link_list_item_cursor)
+            # print(element_link_list_item_target)
+
+            if element_link_list_item_target != "" and element_link_list_item_target is not None and not element_link_list_item_target.endswith('/'):
+                data_return.append(element_link_list_item_target)
+
+            for_element_link_list_item_cursor += 1
+
+        # print(data_return)
+        return data_return
+
+    # 将页面上<link>标签关联的资源下载到当前页面路径下的【./asset】目录中
+    # 后期改成了通用方法
+    def HTML_save_TAG_resource(self, list_data, path_base, path_sub, file_name, is_image=False, image_name_slot_no=""):
+
+        data_return = []
+
+        # 创建目录
+        HTML_save_TAG_link_path = os.path.join(path_base, file_name.split(".html")[0] + path_sub)
+        self.obj_os.execute_os_command_local('mkdir -p "%s"' % HTML_save_TAG_link_path)
+
+        # 循环列表
+        for_list_data_item_cursor = 1
+        for list_data_item in list_data:
+
+            if is_image:
+                list_data_item_file_name = list_data_item.split("/")[image_name_slot_no] + ".jpg"
+            else:
+                list_data_item_file_name = list_data_item.split("/")[-1]
+
+            list_data_item_file_path = os.path.join(HTML_save_TAG_link_path, list_data_item_file_name)
+
+            # print("------ %d " % for_list_data_item_cursor)
+            # print("源头文件【%s】" % list_data_item)
+            # print("目标文件【%s】" % list_data_item_file_name)
+            # print()
+
+            # 存储到本地
+            self.obj_network.download_url(
+                url=list_data_item,
+                to_file_name=list_data_item_file_path
+            )
+
+            if is_image:
+                if list_data_item_file_name.split('.')[-2] not in data_return:
+                    data_return.append(list_data_item_file_name.split('.')[-2])
+            else:
+                if list_data_item_file_name not in data_return:
+                    data_return.append(list_data_item_file_name)
+
+            for_list_data_item_cursor += 1
+
+        return data_return
+
+    def get_HTML_code_TAG_attr(self, HTML_code, attr_name):
+
+        data_return = ""
+
+        if attr_name + "=\"" in HTML_code:
+            data_return = HTML_code.split(attr_name + "=\"")[1].split("\"")[0]
+
+        # print(data_return)
+
+        return data_return
+
+    # 将URL保存为【HTML】
+    def URL_save_as_HTML(self, html_url, save_as_directory, save_as_file_name):
+
+        chrome_options = webdriver.ChromeOptions()
+        chrome_options.add_argument('--save-page-as-mhtml')
+        self.driver_getHtml = webdriver.Chrome(options=chrome_options)
+
+        self.driver_getHtml.get(html_url)
+
+        WebDriverWait(self.driver_getHtml, 60).until(visibility_of_element_located((By.TAG_NAME, 'body')))
+        time.sleep(1)
+
+        # 下载页面包含的资源
+        # -------------- <link>
+        getHtml_Tag_link_list = self.HTML_parse_TAG_return_list(
+            selenium_driver=self.driver_getHtml,
+            TAG_name='link',
+            attr_name='href'
+        )
+        getHtml_Tag_link_list_already_local = self.HTML_save_TAG_resource(list_data=getHtml_Tag_link_list, path_base=save_as_directory, path_sub=self.path_page_resource_suffix,
+                                    file_name=save_as_file_name)
+
+        print("@@@@@@@@@@@@@@ Already in Local / <link>【%s】" % getHtml_Tag_link_list_already_local)
+        print(" ------------- %s" % str(len(getHtml_Tag_link_list_already_local)))
+        print()
+
+        # -------------- <scirpt>
+        getHtml_Tag_script_list = self.HTML_parse_TAG_return_list(
+            selenium_driver=self.driver_getHtml,
+            TAG_name='script',
+            attr_name='src'
+        )
+
+        print("标签【script】: %s" % getHtml_Tag_script_list)
+        getHtml_Tag_script_list_already_local = self.HTML_save_TAG_resource(list_data=getHtml_Tag_script_list,
+                                                                          path_base=save_as_directory,
+                                                                          path_sub=self.path_page_resource_suffix,
+                                                                          file_name=save_as_file_name)
+
+        print("@@@@@@@@@@@@@@ Already in Local / <script>【%s】" % getHtml_Tag_script_list_already_local)
+        print(" ------------- %s" % str(len(getHtml_Tag_script_list_already_local)))
+        print()
+
+        # -------------- Image
+        getHtml_Tag_img_list = self.HTML_parse_TAG_return_list(
+            selenium_driver=self.driver_getHtml,
+            TAG_name='img',
+            attr_name='data-src'
+        )
+        getHtml_Tag_img_list_already_local = self.HTML_save_TAG_resource(list_data=getHtml_Tag_img_list, path_base=save_as_directory, path_sub=self.path_page_resource_suffix,
+                                    file_name=save_as_file_name, is_image=True, image_name_slot_no=-2)
+
+        print("============== 图片列表")
+        for_getHtml_Tag_img_list_item_cursor = 1
+        for getHtml_Tag_img_list_item in getHtml_Tag_img_list:
+            print("--------- %s" % getHtml_Tag_img_list_item)
+            for_getHtml_Tag_img_list_item_cursor += 1
+        print("@@@@@@@@@@@@@@ Already in Local / image【%s】" % getHtml_Tag_img_list_already_local)
+        print(" ------------- %s" % str(len(getHtml_Tag_img_list_already_local)))
+        print()
+
+        # 所有完整的列表：合一
+        getHtml_Tag_list_already_local = []
+
+        for getHtml_Tag_link_list_already_local_item in getHtml_Tag_link_list_already_local:
+            if getHtml_Tag_link_list_already_local_item not in getHtml_Tag_list_already_local:
+                getHtml_Tag_list_already_local.append(getHtml_Tag_link_list_already_local_item)
+
+        for getHtml_Tag_script_list_already_local_item in getHtml_Tag_script_list_already_local:
+            if getHtml_Tag_script_list_already_local_item not in getHtml_Tag_list_already_local:
+                getHtml_Tag_list_already_local.append(getHtml_Tag_script_list_already_local_item)
+
+        for getHtml_Tag_img_list_already_local_item in getHtml_Tag_img_list_already_local:
+            if getHtml_Tag_img_list_already_local_item not in getHtml_Tag_list_already_local:
+                getHtml_Tag_list_already_local.append(getHtml_Tag_img_list_already_local_item)
+
+        # 还要把网页中对应的远程的资源的位置改到本地
+
+        # 获取源页面代码
+        getHtml_page_source = self.driver_getHtml.page_source
+
+        # 最终代码
+        getHtml_page_source_finally = ""
+
+        # 每次循环的当行代码
+        getHtml_page_source_finally_current = ""
+
+        # print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+        # print("源码 / 页面【%s】" % html_url)
+        # print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+        # print(getHtml_page_source)
+        # print("-----------------------------")
+        # print()
+
+        # 开始处理页面代码
+        for getHtml_page_source_line in getHtml_page_source.splitlines():
+
+            # print("Current【%s】" % getHtml_page_source_line)
+
+            string_replace = ""
+            string_replace_to = ""
+            target_file_name = ""
+            is_image = False
+
+            if getHtml_page_source_line.strip().startswith("<link"):
+                print("))))))))))) 识别到【link】")
+                print(getHtml_page_source_line)
+                print("-----------")
+
+                is_image = False
+
+                string_replace = self.get_HTML_code_TAG_attr(
+                    HTML_code=getHtml_page_source_line,
+                    attr_name="href"
+                )
+
+            elif getHtml_page_source_line.strip().startswith("<script"):
+                print("))))))))))) 识别到【script】")
+                print(getHtml_page_source_line)
+                print()
+
+                is_image = False
+
+                string_replace = self.get_HTML_code_TAG_attr(
+                    HTML_code=getHtml_page_source_line,
+                    attr_name="src"
+                )
+
+            elif getHtml_page_source_line.strip().startswith("<img"):
+                print("))))))))))) 识别到【img】")
+                print(getHtml_page_source_line)
+                print()
+
+                is_image = True
+
+                string_replace = self.get_HTML_code_TAG_attr(
+                    HTML_code=getHtml_page_source_line,
+                    attr_name="data-src"
+                )
+
+            elif getHtml_page_source_line.strip().startswith("<span"):
+                print("))))))))))) 识别到【span】")
+                print(getHtml_page_source_line)
+                print()
+
+                is_image = True
+
+                string_replace = self.get_HTML_code_TAG_attr(
+                    HTML_code=getHtml_page_source_line,
+                    attr_name="data-src"
+                )
+
+            if string_replace != "":
+
+                # print("要替换的文本【%s】" % string_replace)
+
+                if is_image:
+                    target_file_name = string_replace.split('/')[-2]
+                else:
+                    target_file_name = string_replace.split('/')[-1]
+
+                # 替换为
+                target_file_path_base = save_as_file_name.split(".html")[0] + self.path_page_resource_suffix
+                string_replace_to = "./" + target_file_path_base + "/" + target_file_name
+
+                if target_file_name in getHtml_Tag_list_already_local:
+                    print("要替换的文本【%s】" % string_replace)
+                    print("替换为的文本【%s】" % string_replace_to)
+                    print()
+
+                    getHtml_page_source_finally_current = getHtml_page_source_line.replace(
+                        string_replace,
+                        string_replace_to
+                    )
+
+                    if is_image:
+                        getHtml_page_source_finally_current = getHtml_page_source_finally_current.split('>')[0] + ' src="' + string_replace_to + '">'
+
+                    getHtml_page_source_finally += getHtml_page_source_finally_current
+
+            getHtml_page_source_finally_current = getHtml_page_source_line
+            getHtml_page_source_finally += getHtml_page_source_finally_current
+
+        # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+        # 最终输出到本地的HTML中
+        # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+        # print(getHtml_page_source_finally)
+
+        getHtml_page_source_finally_file = os.path.join(save_as_directory,save_as_file_name)
+
+        with open(getHtml_page_source_finally_file, 'w') as f:
+            f.write(getHtml_page_source_finally)
 
     def analyze_wechat_mp_tag_page(self, url):
 
@@ -34,33 +335,65 @@ class class_selenium:
 
         wechat_MP_Tag_Item_ul_item_title_pos_num = 0
 
+        print("###################################")
+        print("作者：%s - 头像【%s】" % (wechat_MP_author_name, wechat_MP_author_avatar))
+        print("---------------")
+        print("标签名称【%s】文章数量【%s】" % (wechat_MP_Tag_name, wechat_MP_Tag_num))
+        print("###################################")
+        print()
+
+        # 创建相关目录
+        path_converge_to_current_tag = self.path_converge_to_base + "/" \
+                                       + wechat_MP_author_name + "/"\
+                                       + wechat_MP_Tag_name
+
+        print("路径 - 当前标签【%s】" % path_converge_to_current_tag)
+        print('---------------')
+        print()
+
+        self.obj_os.execute_os_command_local('mkdir -p %s' % path_converge_to_current_tag)
+
+
         while_wechat_MP_Tag_Item_ul_item_title_pos_num_cursor = 1
         while wechat_MP_Tag_Item_ul_item_title_pos_num != "1.":
 
             for_wechat_MP_Tag_Item_ul_item_cursor = 1
             for wechat_MP_Tag_Item_ul_item in wechat_MP_Tag_Item_ul_item_list:
-                wechat_MP_Tag_Item_ul_item_img = wechat_MP_Tag_Item_ul_item.find_element(By.CLASS_NAME,
-                                                                                         'album__item-img').get_attribute(
-                    'style')
+                wechat_MP_Tag_Item_ul_item_img = wechat_MP_Tag_Item_ul_item.find_element(By.CLASS_NAME, 'album__item-img').get_attribute('style')
 
                 wechat_MP_Tag_Item_ul_item_title = wechat_MP_Tag_Item_ul_item.get_attribute('data-title')
                 wechat_MP_Tag_Item_ul_item_article_link = wechat_MP_Tag_Item_ul_item.get_attribute('data-link')
 
-                wechat_MP_Tag_Item_ul_item_id = wechat_MP_Tag_Item_ul_item.find_element(By.CLASS_NAME,
-                                                                                        'mask_ellipsis').find_element(
+                wechat_MP_Tag_Item_ul_item_id = wechat_MP_Tag_Item_ul_item.find_element(By.CLASS_NAME, 'mask_ellipsis').find_element(
                     By.CLASS_NAME, 'mask_ellipsis_text').get_attribute('id')
 
                 wechat_MP_Tag_Item_ul_item_title_pos_num = wechat_MP_Tag_Item_ul_item \
                     .find_element(By.XPATH, '//*[@id="' + wechat_MP_Tag_Item_ul_item_id + '"]/span[1]').text
 
-                wechat_MP_Tag_Item_ul_item_create_time = wechat_MP_Tag_Item_ul_item.find_element(By.CLASS_NAME,
-                                                                                                 'js_article_create_time').text
+                wechat_MP_Tag_Item_ul_item_create_time = wechat_MP_Tag_Item_ul_item.find_element(By.CLASS_NAME, 'js_article_create_time').text
 
-                print("============================= %03d: %s | [%s]%s" % (
-                    for_wechat_MP_Tag_Item_ul_item_cursor, wechat_MP_Tag_Item_ul_item_create_time,
+                print("============================= %03d / %s: %s | [%s]%s" % (
+                    for_wechat_MP_Tag_Item_ul_item_cursor, wechat_MP_Tag_num, wechat_MP_Tag_Item_ul_item_create_time,
                     wechat_MP_Tag_Item_ul_item_title_pos_num, wechat_MP_Tag_Item_ul_item_title))
+
                 print("文章地址：【%s】" % wechat_MP_Tag_Item_ul_item_article_link)
                 print("封面地址：【%s】" % wechat_MP_Tag_Item_ul_item_img)
+
+                # 转储本地
+
+                # 文件名
+                wechat_MP_Tag_Item_ul_item_file_name = wechat_MP_Tag_Item_ul_item_title_pos_num + wechat_MP_Tag_Item_ul_item_title + ".html"
+                # 完整路径
+                path_output_wechat_MP_Tag_Item_ul_item_file_name = os.path.join(path_converge_to_current_tag, wechat_MP_Tag_Item_ul_item_file_name)
+
+                print("路径 - 当前文章 / 转储【%s】" % path_output_wechat_MP_Tag_Item_ul_item_file_name)
+
+                self.URL_save_as_HTML(
+                    html_url=wechat_MP_Tag_Item_ul_item_article_link,
+                    save_as_directory=path_converge_to_current_tag,
+                    save_as_file_name=wechat_MP_Tag_Item_ul_item_file_name
+                )
+
                 print()
 
                 # 自增

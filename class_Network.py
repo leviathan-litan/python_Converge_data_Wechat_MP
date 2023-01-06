@@ -5,6 +5,7 @@
 # ================================
 
 import requests
+from urllib import request
 from bs4 import BeautifulSoup
 
 # ================================
@@ -93,6 +94,33 @@ class class_request:
         data_return = html_script_full[html_script_full_witch]
 
         return data_return
+
+    def download_url(self, url, to_file_name):
+
+        # req = self.get_html_BS4(url=url)
+        #
+        # if to_file_name.split('.')[-1] not in ['ico', 'png', 'jpg']:
+        # with open(to_file_name, 'wb') as f:
+        #
+        #     for req_line in req:
+        #         f.write(req_line)
+        #
+        #     print("@@@@@@@@@@@@@@ 路径【%s】" % url)
+        #     print("------> 下载成功")
+        #     print()
+
+        # 会遇到SSL问题
+        # request.urlretrieve(url, to_file_name)
+
+        with open(to_file_name, 'wb') as f:
+
+            header = {
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36"
+            }
+
+            source = requests.get(url, headers=header).content
+
+            f.write(source)
 
 # ================================
 # 阶段【变量定义】
