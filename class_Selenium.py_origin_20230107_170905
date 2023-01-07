@@ -165,7 +165,7 @@ class class_selenium:
         self.driver_getHtml.get(html_url)
 
         WebDriverWait(self.driver_getHtml, 60).until(visibility_of_element_located((By.TAG_NAME, 'body')))
-        time.sleep(5)
+        time.sleep(1)
 
         # 下载页面包含的资源
         # -------------- <link>
@@ -309,110 +309,49 @@ class class_selenium:
 
             # 这一段会匹配到一大段代码
             # 这一段的代码替换就在这里操作
-            # 原始代码：getHtml_page_source_line - 需要替换的代码
             if "data-src" in getHtml_page_source_line and "span class" in getHtml_page_source_line and "rich_media_content" in getHtml_page_source_line:
-
                 print("))))))))))) 识别到【span / data-src / image】")
+                print(getHtml_page_source_line)
+                print()
 
-                # 找到一个替换一个
-                for_getHtml_page_source_line_item_cursor = 1
-                for getHtml_page_source_line_item in getHtml_page_source_line.split("=\""):
+                # 需要从一大段代码中取得特定的字段
+                # self.get_HTML_code_search_string(
+                #     HTML_code=getHtml_page_source_line,
+                #     Tag_name="img",
+                #     attr_name="data-src"
+                # )
 
-                    getHtml_page_source_line_item_target = getHtml_page_source_line_item.split("\"")[0]
+                target_repalce_string_list = self.get_HTML_code_search_string(
+                    HTML_code=getHtml_page_source_line,
+                    Tag_name="span",
+                    attr_name="data-src"
+                )
 
-                    if getHtml_page_source_line_item_target != "":
+                for target_repalce_string_list_item in target_repalce_string_list:
+                    print("0000000000 [%s]" % target_repalce_string_list_item)
 
-                        if getHtml_page_source_line_item_target.startswith('http'):
+                    target_repalce_string_list_item_file_name = target_repalce_string_list_item.split('/')[-2] + ".jpg"
 
-                            print("---- Line %s" % for_getHtml_page_source_line_item_cursor)
-                            print(getHtml_page_source_line_item_target)
+                    if target_repalce_string_list_item_file_name in getHtml_Tag_list_already_local:
+                        target_repalce_string_list_item_replace_to_str = "./" + target_file_path_base + "/" + target_repalce_string_list_item_file_name
 
-                            getHtml_page_source_line_item_target_part_diff = ""
+                        getHtml_page_source_line.replace(target_repalce_string_list_item, target_repalce_string_list_item_replace_to_str)
 
-                            if "/" in getHtml_page_source_line_item_target:
-                                getHtml_page_source_line_item_target_part_diff = getHtml_page_source_line_item_target.split('/')[-2]
-
-                            if getHtml_page_source_line_item_target_part_diff in getHtml_Tag_img_list_already_local:
-
-                                target_file_path_base = save_as_file_name.split(".html")[0] + self.path_page_resource_suffix
-
-                                # Old
-                                getHtml_page_source_line_item_target_replace_to_1 = "./" + target_file_path_base + "/" + getHtml_page_source_line_item_target_part_diff + ".jpg"
-                                getHtml_page_source_line_item_target_replace_to_2 = getHtml_page_source_line_item_target_replace_to_1 + '" src="' + getHtml_page_source_line_item_target_replace_to_1 + '"'
-
-                                # New
-                                # getHtml_page_source_line_item_target_replace_to_1 = target_file_path_base + "/" + getHtml_page_source_line_item_target_part_diff + ".jpg"
-                                # getHtml_page_source_line_item_target_replace_to_2 = getHtml_page_source_line_item_target_replace_to_1 + '"'
-
-                                # print("替换为：【%s】" % getHtml_page_source_line_item_target_replace_to_2)
-                                # print()
-
-                                getHtml_page_source_line = getHtml_page_source_line.replace(getHtml_page_source_line_item_target + "\"", getHtml_page_source_line_item_target_replace_to_2)
-
-                            for_getHtml_page_source_line_item_cursor += 1
-
-                # 将图片标签的span替换为img
-
-                for_getHtml_page_source_line_span_item_cursor_twice = 1
-                for getHtml_page_source_line_span_item in getHtml_page_source_line.split("<span"):
-                    getHtml_page_source_line_item_content = getHtml_page_source_line_span_item.split('>')[0]
-
-                    if "src" in getHtml_page_source_line_item_content:
-                        # print("[span] --------- %s" % for_getHtml_page_source_line_span_item_cursor_twice)
-                        # print(getHtml_page_source_line_item_content)
-                        # print()
-
-                        # 后面真正执行替换的时候，在替换目标字符串上需要做响应的修改
-                        replace_string = "<span" + getHtml_page_source_line_item_content + ">"
-                        replace_to_string = "<img" + getHtml_page_source_line_item_content + "><span>"
-
-                        if replace_string in getHtml_page_source_line:
-                            # print("匹配到【%s】" % replace_string)
-
-                            getHtml_page_source_line = getHtml_page_source_line.replace(
-                                replace_string,
-                                replace_to_string
-                            )
-
-                        for_getHtml_page_source_line_span_item_cursor_twice += 1
-
-                for_getHtml_page_source_line_img_item_cursor_twice = 1
-                for getHtml_page_source_line_img_item in getHtml_page_source_line.split("<img"):
-                    getHtml_page_source_line_item_content = getHtml_page_source_line_img_item.split('>')[0]
-
-                    # if "rich_pages wxw-img" in getHtml_page_source_line_item_content and "src" in getHtml_page_source_line_item_content:
-                    if "src" in getHtml_page_source_line_item_content:
-                        # print("[img] --------- %s" % for_getHtml_page_source_line_img_item_cursor_twice)
-                        # print(getHtml_page_source_line_item_content)
-                        # print()
-
-                        # getHtml_page_source_line = getHtml_page_source_line.replace(
-                        #     "<span" + getHtml_page_source_line_item_content + ">",
-                        #     "<img" + getHtml_page_source_line_item_content + ">"
-                        # )
-
-                        for_getHtml_page_source_line_img_item_cursor_twice += 1
-
-                # 最终整合
-
-                # print("@@@@@@@@@@@@@@")
-                # print(getHtml_page_source_line)
-                # print("@@@@@@@@@@@@@@")
+                print("替换后：")
+                print("**************************")
+                print(getHtml_page_source_line)
+                print("**************************")
+                print()
 
                 getHtml_page_source_finally_current = getHtml_page_source_line
                 getHtml_page_source_finally += getHtml_page_source_finally_current
-
-                # print("@@@@@@@@")
-                # print(getHtml_page_source_finally_current)
-
-                continue
 
             if string_replace != "":
 
                 # print("要替换的文本【%s】" % string_replace)
 
                 if is_image:
-                    target_file_name = string_replace.split('/')[-2]
+                    target_file_name = string_replace.split('/')[-2] + ".jpg"
                 else:
                     target_file_name = string_replace.split('/')[-1]
 
@@ -491,18 +430,7 @@ class class_selenium:
 
 
         # 全局列表 - 已经存储过的文章
-        current_tag_already_save_as_file_name = "current_tag_already_save_as.conf"
-
         current_tag_already_save_as = []
-
-        with open(current_tag_already_save_as_file_name, "r") as f:
-            for line in f:
-                if line is not None and line != "":
-                    current_tag_already_save_as.append(line.strip('\n'))
-
-        print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
-        print(current_tag_already_save_as)
-        print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
 
         while_wechat_MP_Tag_Item_ul_item_title_pos_num_cursor = 1
         while wechat_MP_Tag_Item_ul_item_title_pos_num != "1.":
@@ -538,8 +466,6 @@ class class_selenium:
 
                 print("路径 - 当前文章 / 转储【%s】" % path_output_wechat_MP_Tag_Item_ul_item_file_name)
 
-                URL_save_as_HTML_result = False
-
                 if wechat_MP_Tag_Item_ul_item_file_name not in current_tag_already_save_as:
                     URL_save_as_HTML_result = self.URL_save_as_HTML(
                         html_url=wechat_MP_Tag_Item_ul_item_article_link,
@@ -549,10 +475,6 @@ class class_selenium:
 
                 if URL_save_as_HTML_result:
                     current_tag_already_save_as.append(wechat_MP_Tag_Item_ul_item_file_name)
-
-                    with open(current_tag_already_save_as_file_name, "a+") as f:
-                        print(wechat_MP_Tag_Item_ul_item_file_name)
-                        f.write(wechat_MP_Tag_Item_ul_item_file_name+"\n")
 
                 print()
 
