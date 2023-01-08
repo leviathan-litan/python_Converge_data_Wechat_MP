@@ -9,6 +9,8 @@ import class_YAML
 import class_JSON
 import class_Selenium
 
+from tqdm.notebook import trange
+
 # ================================
 # 阶段【类定义】
 # ================================
@@ -30,7 +32,7 @@ wechat_mp_collections_item_list = obj_yaml.yaml_param_get_value(
     split_with="/"
 )
 
-for wechat_mp_collections_item_list_item in wechat_mp_collections_item_list:
+for wechat_mp_collections_item_list_item in trange(wechat_mp_collections_item_list, desc="总体进度（所有TAG合集）"):
 
     wechat_mp_collections_item_list_item_url = wechat_mp_collections_item_list_item['url']
 

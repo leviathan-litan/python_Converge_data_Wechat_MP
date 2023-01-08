@@ -49,12 +49,15 @@ wechat_mp:
 #
 #    - name: "读书"
 #      url: "https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzI0NjI2Nzg1Ng==&action=getalbum&album_id=2616568787093454851#wechat_redirect"
+#
+#    - name: "脱单实验室RIGHT - #脱单"
+#      url: "https://mp.weixin.qq.com/mp/appmsgalbum?action=getalbum&__biz=MzIxOTM2NDk5MQ==&scene=1&album_id=2083447322302054402&count=3#wechat_redirect"
+#
+#    - name: "泡泡恋爱学 - #脱单"
+#      url: "https://mp.weixin.qq.com/mp/appmsgalbum?action=getalbum&__biz=Mzg5NDczMTMxNg==&scene=1&album_id=2389116273214586881&count=3#wechat_redirect"
 
-    - name: "脱单实验室RIGHT - #脱单"
-      url: "https://mp.weixin.qq.com/mp/appmsgalbum?action=getalbum&__biz=MzIxOTM2NDk5MQ==&scene=1&album_id=2083447322302054402&count=3#wechat_redirect"
-
-    - name: "泡泡恋爱学 - #脱单"
-      url: "https://mp.weixin.qq.com/mp/appmsgalbum?action=getalbum&__biz=Mzg5NDczMTMxNg==&scene=1&album_id=2389116273214586881&count=3#wechat_redirect"
+    - name: "遇见长安遇见你 - #漂亮小姐姐云集"
+      url: "https://mp.weixin.qq.com/mp/appmsgalbum?action=getalbum&__biz=Mzg2NzIwNDU1Mw==&scene=1&album_id=1977362513277091842&count=3#wechat_redirect"
 
     - name: "静思有我 - #静思杂谈图文"
       url: "https://mp.weixin.qq.com/mp/appmsgalbum?action=getalbum&__biz=MzkwMDM0NTk3Ng==&scene=1&album_id=2357033074712297473&count=3#wechat_redirect"

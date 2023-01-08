@@ -29,7 +29,7 @@ class class_os:
         data_return_len = 0
 
         # 显示
-        print("将执行的命令：%s" % (os_command))
+        # print("将执行的命令：%s" % (os_command))
 
         # 处理
         os_command_result = os.popen(os_command).read().splitlines()

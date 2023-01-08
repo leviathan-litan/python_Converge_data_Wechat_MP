@@ -7,10 +7,14 @@
 import os.path
 import time
 
+import tqdm
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.expected_conditions import visibility_of_element_located
 from selenium.webdriver.support.ui import WebDriverWait
+
+from alive_progress import alive_bar
+from tqdm.notebook import trange
 
 import class_YAML
 import class_OS
@@ -77,7 +81,11 @@ class class_selenium:
 
         # 创建目录
         HTML_save_TAG_link_path = os.path.join(path_base, file_name.split(".html")[0] + path_sub)
-        self.obj_os.execute_os_command_local('mkdir -p "%s"' % HTML_save_TAG_link_path)
+
+        if '"' in HTML_save_TAG_link_path:
+            HTML_save_TAG_link_path = HTML_save_TAG_link_path.replace('"','\"')
+
+        self.obj_os.execute_os_command_local("mkdir -p '%s'" % HTML_save_TAG_link_path)
 
         # 循环列表
         for_list_data_item_cursor = 1
@@ -177,9 +185,9 @@ class class_selenium:
         getHtml_Tag_link_list_already_local = self.HTML_save_TAG_resource(list_data=getHtml_Tag_link_list, path_base=save_as_directory, path_sub=self.path_page_resource_suffix,
                                     file_name=save_as_file_name)
 
-        print("@@@@@@@@@@@@@@ Already in Local / <link>【%s】" % getHtml_Tag_link_list_already_local)
-        print(" ------------- %s" % str(len(getHtml_Tag_link_list_already_local)))
-        print()
+        # print("@@@@@@@@@@@@@@ Already in Local / <link>【%s】" % getHtml_Tag_link_list_already_local)
+        # print(" ------------- %s" % str(len(getHtml_Tag_link_list_already_local)))
+        # print()
 
         # -------------- <scirpt>
         getHtml_Tag_script_list = self.HTML_parse_TAG_return_list(
@@ -188,15 +196,15 @@ class class_selenium:
             attr_name='src'
         )
 
-        print("标签【script】: %s" % getHtml_Tag_script_list)
+        # print("标签【script】: %s" % getHtml_Tag_script_list)
         getHtml_Tag_script_list_already_local = self.HTML_save_TAG_resource(list_data=getHtml_Tag_script_list,
                                                                           path_base=save_as_directory,
                                                                           path_sub=self.path_page_resource_suffix,
                                                                           file_name=save_as_file_name)
 
-        print("@@@@@@@@@@@@@@ Already in Local / <script>【%s】" % getHtml_Tag_script_list_already_local)
-        print(" ------------- %s" % str(len(getHtml_Tag_script_list_already_local)))
-        print()
+        # print("@@@@@@@@@@@@@@ Already in Local / <script>【%s】" % getHtml_Tag_script_list_already_local)
+        # print(" ------------- %s" % str(len(getHtml_Tag_script_list_already_local)))
+        # print()
 
         # -------------- Image
         getHtml_Tag_img_list = self.HTML_parse_TAG_return_list(
@@ -207,14 +215,14 @@ class class_selenium:
         getHtml_Tag_img_list_already_local = self.HTML_save_TAG_resource(list_data=getHtml_Tag_img_list, path_base=save_as_directory, path_sub=self.path_page_resource_suffix,
                                     file_name=save_as_file_name, is_image=True, image_name_slot_no=-2)
 
-        print("============== 图片列表")
-        for_getHtml_Tag_img_list_item_cursor = 1
-        for getHtml_Tag_img_list_item in getHtml_Tag_img_list:
-            print("--------- %s" % getHtml_Tag_img_list_item)
-            for_getHtml_Tag_img_list_item_cursor += 1
-        print("@@@@@@@@@@@@@@ Already in Local / image【%s】" % getHtml_Tag_img_list_already_local)
-        print(" ------------- %s" % str(len(getHtml_Tag_img_list_already_local)))
-        print()
+        # print("============== 图片列表")
+        # for_getHtml_Tag_img_list_item_cursor = 1
+        # for getHtml_Tag_img_list_item in getHtml_Tag_img_list:
+        #     print("--------- %s" % getHtml_Tag_img_list_item)
+        #     for_getHtml_Tag_img_list_item_cursor += 1
+        # print("@@@@@@@@@@@@@@ Already in Local / image【%s】" % getHtml_Tag_img_list_already_local)
+        # print(" ------------- %s" % str(len(getHtml_Tag_img_list_already_local)))
+        # print()
 
         # 所有完整的列表：合一
         getHtml_Tag_list_already_local = []
@@ -312,7 +320,7 @@ class class_selenium:
             # 原始代码：getHtml_page_source_line - 需要替换的代码
             if "data-src" in getHtml_page_source_line and "span class" in getHtml_page_source_line and "rich_media_content" in getHtml_page_source_line:
 
-                print("))))))))))) 识别到【span / data-src / image】")
+                # print("))))))))))) 识别到【span / data-src / image】")
 
                 # 找到一个替换一个
                 for_getHtml_page_source_line_item_cursor = 1
@@ -324,8 +332,8 @@ class class_selenium:
 
                         if getHtml_page_source_line_item_target.startswith('http'):
 
-                            print("---- Line %s" % for_getHtml_page_source_line_item_cursor)
-                            print(getHtml_page_source_line_item_target)
+                            # print("---- Line %s" % for_getHtml_page_source_line_item_cursor)
+                            # print(getHtml_page_source_line_item_target)
 
                             getHtml_page_source_line_item_target_part_diff = ""
 
@@ -463,13 +471,16 @@ class class_selenium:
         wechat_MP_author_name = self.browser.find_element(By.CLASS_NAME, "album__author-name").text
 
         wechat_MP_Tag_name = self.browser.find_element(By.ID, "js_tag_name").text
-        wechat_MP_Tag_num = self.browser.find_element(By.CLASS_NAME, "album__num").text
+        wechat_MP_Tag_num = self.browser.find_element(By.CLASS_NAME, "album__num").text.split('个')[0]
 
         wechat_MP_Tag_Item_ul = self.browser.find_element(By.CLASS_NAME, "album__list")
 
         wechat_MP_Tag_Item_ul_item_list = wechat_MP_Tag_Item_ul.find_elements(By.XPATH, 'li')
 
         wechat_MP_Tag_Item_ul_item_title_pos_num = 0
+
+        # ----------- Message
+        wechat_MP_Tag_message = wechat_MP_author_name + " / " + wechat_MP_Tag_name
 
         print("###################################")
         print("作者：%s - 头像【%s】" % (wechat_MP_author_name, wechat_MP_author_avatar))
@@ -500,73 +511,100 @@ class class_selenium:
                 if line is not None and line != "":
                     current_tag_already_save_as.append(line.strip('\n'))
 
+
+        # 当前标签已经存储过的文章数量
+        current_tag_alraedy_save_num = 0
+
         print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
         print(current_tag_already_save_as)
         print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
 
         while_wechat_MP_Tag_Item_ul_item_title_pos_num_cursor = 1
-        while wechat_MP_Tag_Item_ul_item_title_pos_num != "1.":
 
-            for_wechat_MP_Tag_Item_ul_item_cursor = 1
-            for wechat_MP_Tag_Item_ul_item in wechat_MP_Tag_Item_ul_item_list:
-                wechat_MP_Tag_Item_ul_item_img = wechat_MP_Tag_Item_ul_item.find_element(By.CLASS_NAME, 'album__item-img').get_attribute('style')
+        # 有的TAG的文章是有序号的
+        # while wechat_MP_Tag_Item_ul_item_title_pos_num != "1.":
 
-                wechat_MP_Tag_Item_ul_item_title = wechat_MP_Tag_Item_ul_item.get_attribute('data-title')
-                wechat_MP_Tag_Item_ul_item_article_link = wechat_MP_Tag_Item_ul_item.get_attribute('data-link')
+        # 进度
+        progress_percent = 0
 
-                wechat_MP_Tag_Item_ul_item_id = wechat_MP_Tag_Item_ul_item.find_element(By.CLASS_NAME, 'mask_ellipsis').find_element(
-                    By.CLASS_NAME, 'mask_ellipsis_text').get_attribute('id')
+        # 有的TAG的文章是没有序号的
+        while wechat_MP_Tag_num != current_tag_alraedy_save_num:
 
-                wechat_MP_Tag_Item_ul_item_title_pos_num = wechat_MP_Tag_Item_ul_item \
-                    .find_element(By.XPATH, '//*[@id="' + wechat_MP_Tag_Item_ul_item_id + '"]/span[1]').text
+            with alive_bar(total=100, manual=True) as bar:
 
-                wechat_MP_Tag_Item_ul_item_create_time = wechat_MP_Tag_Item_ul_item.find_element(By.CLASS_NAME, 'js_article_create_time').text
+                for_wechat_MP_Tag_Item_ul_item_cursor = 1
+                # for wechat_MP_Tag_Item_ul_item in wechat_MP_Tag_Item_ul_item_list:
+                for wechat_MP_Tag_Item_ul_item in trange(wechat_MP_Tag_Item_ul_item_list, desc=wechat_MP_Tag_message, leave=False):
+                    wechat_MP_Tag_Item_ul_item_img = wechat_MP_Tag_Item_ul_item.find_element(By.CLASS_NAME, 'album__item-img').get_attribute('style')
 
-                print("============================= %03d / %s: %s | [%s]%s" % (
-                    for_wechat_MP_Tag_Item_ul_item_cursor, wechat_MP_Tag_num, wechat_MP_Tag_Item_ul_item_create_time,
-                    wechat_MP_Tag_Item_ul_item_title_pos_num, wechat_MP_Tag_Item_ul_item_title))
+                    wechat_MP_Tag_Item_ul_item_title = wechat_MP_Tag_Item_ul_item.get_attribute('data-title')
+                    wechat_MP_Tag_Item_ul_item_article_link = wechat_MP_Tag_Item_ul_item.get_attribute('data-link')
 
-                print("文章地址：【%s】" % wechat_MP_Tag_Item_ul_item_article_link)
-                print("封面地址：【%s】" % wechat_MP_Tag_Item_ul_item_img)
+                    wechat_MP_Tag_Item_ul_item_id = wechat_MP_Tag_Item_ul_item.find_element(By.CLASS_NAME, 'mask_ellipsis').find_element(
+                        By.CLASS_NAME, 'mask_ellipsis_text').get_attribute('id')
 
-                # 转储本地
+                    wechat_MP_Tag_Item_ul_item_title_pos_num = wechat_MP_Tag_Item_ul_item \
+                        .find_element(By.XPATH, '//*[@id="' + wechat_MP_Tag_Item_ul_item_id + '"]/span[1]').text
 
-                # 文件名
-                wechat_MP_Tag_Item_ul_item_file_name = wechat_MP_Tag_Item_ul_item_title_pos_num + wechat_MP_Tag_Item_ul_item_title + ".html"
-                # 完整路径
-                path_output_wechat_MP_Tag_Item_ul_item_file_name = os.path.join(path_converge_to_current_tag, wechat_MP_Tag_Item_ul_item_file_name)
+                    wechat_MP_Tag_Item_ul_item_create_time = wechat_MP_Tag_Item_ul_item.find_element(By.CLASS_NAME, 'js_article_create_time').text
 
-                print("路径 - 当前文章 / 转储【%s】" % path_output_wechat_MP_Tag_Item_ul_item_file_name)
+                    # #############################3
+                    # 进度
+                    # #############################3
+                    progress_percent = int(current_tag_alraedy_save_num) / int(wechat_MP_Tag_num)
+                    print("################## 进度：%s" % progress_percent)
+                    bar(progress_percent)
+                    print("---------------------------------------------")
+                    print()
 
-                URL_save_as_HTML_result = False
+                    print("============================= %03d / %s: %s | [%s]%s" % (
+                        for_wechat_MP_Tag_Item_ul_item_cursor, wechat_MP_Tag_num, wechat_MP_Tag_Item_ul_item_create_time,
+                        wechat_MP_Tag_Item_ul_item_title_pos_num, wechat_MP_Tag_Item_ul_item_title))
 
-                if wechat_MP_Tag_Item_ul_item_file_name not in current_tag_already_save_as:
-                    URL_save_as_HTML_result = self.URL_save_as_HTML(
-                        html_url=wechat_MP_Tag_Item_ul_item_article_link,
-                        save_as_directory=path_converge_to_current_tag,
-                        save_as_file_name=wechat_MP_Tag_Item_ul_item_file_name
-                    )
+                    print("文章地址：【%s】" % wechat_MP_Tag_Item_ul_item_article_link)
+                    print("封面地址：【%s】" % wechat_MP_Tag_Item_ul_item_img)
 
-                if URL_save_as_HTML_result:
-                    current_tag_already_save_as.append(wechat_MP_Tag_Item_ul_item_file_name)
+                    # 转储本地
 
-                    with open(current_tag_already_save_as_file_name, "a+") as f:
-                        print(wechat_MP_Tag_Item_ul_item_file_name)
-                        f.write(wechat_MP_Tag_Item_ul_item_file_name+"\n")
+                    # 文件名
+                    wechat_MP_Tag_Item_ul_item_file_name = wechat_MP_Tag_Item_ul_item_title_pos_num + wechat_MP_Tag_Item_ul_item_title + ".html"
+                    # 完整路径
+                    path_output_wechat_MP_Tag_Item_ul_item_file_name = os.path.join(path_converge_to_current_tag, wechat_MP_Tag_Item_ul_item_file_name)
 
-                print()
+                    print("路径 - 当前文章 / 转储【%s】" % path_output_wechat_MP_Tag_Item_ul_item_file_name)
 
-                # 自增
-                for_wechat_MP_Tag_Item_ul_item_cursor += 1
+                    URL_save_as_HTML_result = False
 
-            scrollTo_Parameter_2 = while_wechat_MP_Tag_Item_ul_item_title_pos_num_cursor * 1000
-            self.browser.execute_script(
-                "window.scrollTo(0," + str(scrollTo_Parameter_2) + ")"
-                # 'document.documentElement.scrollTop=2000'
-            )
+                    if wechat_MP_Tag_Item_ul_item_file_name not in current_tag_already_save_as:
+                        URL_save_as_HTML_result = self.URL_save_as_HTML(
+                            html_url=wechat_MP_Tag_Item_ul_item_article_link,
+                            save_as_directory=path_converge_to_current_tag,
+                            save_as_file_name=wechat_MP_Tag_Item_ul_item_file_name
+                        )
 
-            while_wechat_MP_Tag_Item_ul_item_title_pos_num_cursor += 1
-            wechat_MP_Tag_Item_ul_item_list = wechat_MP_Tag_Item_ul.find_elements(By.XPATH, 'li')
+                    if URL_save_as_HTML_result:
+                        current_tag_already_save_as.append(wechat_MP_Tag_Item_ul_item_file_name)
+
+                        current_tag_alraedy_save_num += 1
+
+                        with open(current_tag_already_save_as_file_name, "a+") as f:
+                            # print(wechat_MP_Tag_Item_ul_item_file_name)
+
+                            f.write(wechat_MP_Tag_Item_ul_item_file_name+"\n")
+
+                    print()
+
+                    # 自增
+                    for_wechat_MP_Tag_Item_ul_item_cursor += 1
+
+                scrollTo_Parameter_2 = while_wechat_MP_Tag_Item_ul_item_title_pos_num_cursor * 1000
+                self.browser.execute_script(
+                    "window.scrollTo(0," + str(scrollTo_Parameter_2) + ")"
+                    # 'document.documentElement.scrollTop=2000'
+                )
+
+                while_wechat_MP_Tag_Item_ul_item_title_pos_num_cursor += 1
+                wechat_MP_Tag_Item_ul_item_list = wechat_MP_Tag_Item_ul.find_elements(By.XPATH, 'li')
 
 # ================================
 # 阶段【变量定义】
