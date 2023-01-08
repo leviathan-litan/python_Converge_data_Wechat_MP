@@ -11,53 +11,56 @@ wechat_mp:
 
   # 合集列表
   collections:
-#    - name: "Python"
-#      url: "https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzI0NjI2Nzg1Ng==&action=getalbum&album_id=2604643599875604481#wechat_redirect"
-#
-#    - name: "MySQL"
-#      url: "https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzI0NjI2Nzg1Ng==&action=getalbum&album_id=2604620702314430464#wechat_redirect"
-#
-#    - name: "Cloudera"
-#      url: "https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzI0NjI2Nzg1Ng==&action=getalbum&album_id=2604619754703716353#wechat_redirect"
-#
-#    - name: "Vue.JS"
-#      url: "https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzI0NjI2Nzg1Ng==&action=getalbum&album_id=2641696104832598018#wechat_redirect"
-#
-#    - name: "Webpack"
-#      url: "https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzI0NjI2Nzg1Ng==&action=getalbum&album_id=2693638439640006662#wechat_redirect"
-#
-#    - name: "烹饪【思考与理念】"
-#      url: "https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzI0NjI2Nzg1Ng==&action=getalbum&album_id=2611934822357303298#wechat_redirect"
-#
-#    - name: "烹饪【调味品】"
-#      url: "https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzI0NjI2Nzg1Ng==&action=getalbum&album_id=2611386114783870977#wechat_redirect"
-#
-#    - name: "烹饪【食谱】"
-#      url: "https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzI0NjI2Nzg1Ng==&action=getalbum&album_id=2605040820764835842#wechat_redirect"
-#
-#    - name: "烹饪【刀工】"
-#      url: "https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzI0NjI2Nzg1Ng==&action=getalbum&album_id=2604756439605215234#wechat_redirect"
-#
-#    - name: "烹饪【雕刻】"
-#      url: "https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzI0NjI2Nzg1Ng==&action=getalbum&album_id=2719456958025596930#wechat_redirect"
-#
-#    - name: "歌曲"
-#      url: "https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzI0NjI2Nzg1Ng==&action=getalbum&album_id=2612226984605155330#wechat_redirect"
-#
-#    - name: "英语"
-#      url: "https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzI0NjI2Nzg1Ng==&action=getalbum&album_id=2611386115102638084#wechat_redirect"
-#
-#    - name: "读书"
-#      url: "https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzI0NjI2Nzg1Ng==&action=getalbum&album_id=2616568787093454851#wechat_redirect"
-#
-#    - name: "脱单实验室RIGHT - #脱单"
-#      url: "https://mp.weixin.qq.com/mp/appmsgalbum?action=getalbum&__biz=MzIxOTM2NDk5MQ==&scene=1&album_id=2083447322302054402&count=3#wechat_redirect"
-#
-#    - name: "泡泡恋爱学 - #脱单"
-#      url: "https://mp.weixin.qq.com/mp/appmsgalbum?action=getalbum&__biz=Mzg5NDczMTMxNg==&scene=1&album_id=2389116273214586881&count=3#wechat_redirect"
+    - name: "Python"
+      url: "https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzI0NjI2Nzg1Ng==&action=getalbum&album_id=2604643599875604481#wechat_redirect"
+
+    - name: "MySQL"
+      url: "https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzI0NjI2Nzg1Ng==&action=getalbum&album_id=2604620702314430464#wechat_redirect"
+
+    - name: "Cloudera"
+      url: "https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzI0NjI2Nzg1Ng==&action=getalbum&album_id=2604619754703716353#wechat_redirect"
+
+    - name: "Vue.JS"
+      url: "https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzI0NjI2Nzg1Ng==&action=getalbum&album_id=2641696104832598018#wechat_redirect"
+
+    - name: "Webpack"
+      url: "https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzI0NjI2Nzg1Ng==&action=getalbum&album_id=2693638439640006662#wechat_redirect"
+
+    - name: "烹饪【思考与理念】"
+      url: "https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzI0NjI2Nzg1Ng==&action=getalbum&album_id=2611934822357303298#wechat_redirect"
+
+    - name: "烹饪【调味品】"
+      url: "https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzI0NjI2Nzg1Ng==&action=getalbum&album_id=2611386114783870977#wechat_redirect"
+
+    - name: "烹饪【食谱】"
+      url: "https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzI0NjI2Nzg1Ng==&action=getalbum&album_id=2605040820764835842#wechat_redirect"
+
+    - name: "烹饪【刀工】"
+      url: "https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzI0NjI2Nzg1Ng==&action=getalbum&album_id=2604756439605215234#wechat_redirect"
+
+    - name: "烹饪【雕刻】"
+      url: "https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzI0NjI2Nzg1Ng==&action=getalbum&album_id=2719456958025596930#wechat_redirect"
+
+    - name: "歌曲"
+      url: "https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzI0NjI2Nzg1Ng==&action=getalbum&album_id=2612226984605155330#wechat_redirect"
+
+    - name: "英语"
+      url: "https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzI0NjI2Nzg1Ng==&action=getalbum&album_id=2611386115102638084#wechat_redirect"
+
+    - name: "读书"
+      url: "https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzI0NjI2Nzg1Ng==&action=getalbum&album_id=2616568787093454851#wechat_redirect"
+
+    - name: "脱单实验室RIGHT - #脱单"
+      url: "https://mp.weixin.qq.com/mp/appmsgalbum?action=getalbum&__biz=MzIxOTM2NDk5MQ==&scene=1&album_id=2083447322302054402&count=3#wechat_redirect"
+
+    - name: "泡泡恋爱学 - #脱单"
+      url: "https://mp.weixin.qq.com/mp/appmsgalbum?action=getalbum&__biz=Mzg5NDczMTMxNg==&scene=1&album_id=2389116273214586881&count=3#wechat_redirect"
 
     - name: "遇见长安遇见你 - #漂亮小姐姐云集"
       url: "https://mp.weixin.qq.com/mp/appmsgalbum?action=getalbum&__biz=Mzg2NzIwNDU1Mw==&scene=1&album_id=1977362513277091842&count=3#wechat_redirect"
+
+    - name: "非凡精英 - #VSINGLE优秀单身女会员推荐"
+      url: "https://mp.weixin.qq.com/mp/appmsgalbum?action=getalbum&__biz=MzI0MDA0NzA4MA==&scene=1&album_id=1371534895293808643&count=3#wechat_redirect"
 
     - name: "静思有我 - #静思杂谈图文"
       url: "https://mp.weixin.qq.com/mp/appmsgalbum?action=getalbum&__biz=MzkwMDM0NTk3Ng==&scene=1&album_id=2357033074712297473&count=3#wechat_redirect"
@@ -77,9 +80,6 @@ wechat_mp:
     - name: "一读 - #周末考"
       url: "https://mp.weixin.qq.com/mp/appmsgalbum?__biz=OTE4MzAyODYx&action=getalbum&album_id=1816784172577849348&scene=173&from_msgid=2652325582&from_itemidx=1&count=3&nolastread=1#wechat_redirect"
 
-    - name: "非凡精英 - #VSINGLE优秀单身女会员推荐"
-      url: "https://mp.weixin.qq.com/mp/appmsgalbum?action=getalbum&__biz=MzI0MDA0NzA4MA==&scene=1&album_id=1371534895293808643&count=3#wechat_redirect"
-
     - name: "杜蕾斯 - #原创"
       url: "https://mp.weixin.qq.com/mp/appmsgalbum?action=getalbum&__biz=MjM5MDAxMTQ0MA==&scene=1&album_id=2599225411608510465&count=3#wechat_redirect"
 
@@ -90,3 +90,7 @@ converge:
     converge_to: "/Users/adamhuan/adamhuan_data/wechat_mp_data"
     # 页面资源的路径 - 子目录后缀
     page_resource_suffix: "___assset"
+
+  file:
+    total_tag_already_save_as: "total_tag_already_save_as.conf"
+    total_article_already_save_as: "total_article_already_save_as.conf"
