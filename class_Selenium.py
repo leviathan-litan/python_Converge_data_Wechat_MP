@@ -355,7 +355,10 @@ class class_selenium:
                                 target_file_path_base = save_as_file_name.split(".html")[0] + self.path_page_resource_suffix
 
                                 # Old
-                                getHtml_page_source_line_item_target_replace_to_1 = "./" + target_file_path_base + "/" + getHtml_page_source_line_item_target_part_diff + ".jpg"
+                                # 替换图片引用
+                                # getHtml_page_source_line_item_target_replace_to_1 = "./" + target_file_path_base + "/" + getHtml_page_source_line_item_target_part_diff + ".jpg"
+                                getHtml_page_source_line_item_target_replace_to_1 = target_file_path_base + "/" + getHtml_page_source_line_item_target_part_diff + ".jpg"
+
                                 getHtml_page_source_line_item_target_replace_to_2 = getHtml_page_source_line_item_target_replace_to_1 + '" src="' + getHtml_page_source_line_item_target_replace_to_1 + '"'
 
                                 # New
@@ -400,9 +403,21 @@ class class_selenium:
 
                     # if "rich_pages wxw-img" in getHtml_page_source_line_item_content and "src" in getHtml_page_source_line_item_content:
                     if "src" in getHtml_page_source_line_item_content:
-                        # print("[img] --------- %s" % for_getHtml_page_source_line_img_item_cursor_twice)
-                        # print(getHtml_page_source_line_item_content)
-                        # print()
+                        print("[img] --------- %s" % for_getHtml_page_source_line_img_item_cursor_twice)
+                        print("之前：【%s】" % getHtml_page_source_line_item_content)
+                        print("******************")
+
+                        if "class" not in getHtml_page_source_line_item_content and "alt=\"图片\"" in getHtml_page_source_line_item_content:
+
+                            replace_string = "<img" + getHtml_page_source_line_item_content + ">"
+
+                            # replace_to_string = "<img class='wx_widget_placeholder'" + getHtml_page_source_line_item_content + ">"
+                            replace_to_string = "<img class='rich_pages wxw-img'" + getHtml_page_source_line_item_content + ">"
+
+                            getHtml_page_source_line = getHtml_page_source_line.replace(
+                                replace_string,
+                                replace_to_string
+                            )
 
                         # 解决部分微信公众号爬取的文章的图片不显示的问题
                         if " class=\"" not in getHtml_page_source_line_item_content and " class " in getHtml_page_source_line_item_content:
@@ -418,6 +433,10 @@ class class_selenium:
                         #     )
 
                         for_getHtml_page_source_line_img_item_cursor_twice += 1
+
+                    print("之后【%s】" % getHtml_page_source_line_item_content)
+                    print("******************")
+                    print()
 
                 # 最终整合
 
