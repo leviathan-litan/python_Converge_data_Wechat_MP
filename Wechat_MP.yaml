@@ -62,6 +62,27 @@ wechat_mp:
     - name: "非凡精英 - #VSINGLE优秀单身女会员推荐"
       url: "https://mp.weixin.qq.com/mp/appmsgalbum?action=getalbum&__biz=MzI0MDA0NzA4MA==&scene=1&album_id=1371534895293808643&count=3#wechat_redirect"
 
+    - name: "国漫二次元 - #长腿美女"
+      url: "https://mp.weixin.qq.com/mp/appmsgalbum?action=getalbum&__biz=MzIzNDE5NDA3Nw==&scene=1&album_id=2616307804093874177&count=3#wechat_redirect"
+
+    - name: "国漫二次元 - 宅男女神"
+      url: "https://mp.weixin.qq.com/mp/homepage?__biz=MzIzNDE5NDA3Nw==&hid=11&sn=172e2729d2e809d388470369e977b882&scene=1&devicetype=android-33&version=28001f59&lang=zh_CN&nettype=WIFI&ascene=59&session_us=gh_dfc54b389b0a&wx_header=3"
+
+    - name: "国漫二次元 - 二次元"
+      url: "https://mp.weixin.qq.com/mp/homepage?__biz=MzIzNDE5NDA3Nw==&hid=10&sn=033aa7a16615db945ab22ce5ac663b78&scene=1&devicetype=android-33&version=28001f59&lang=zh_CN&nettype=WIFI&ascene=59&session_us=gh_dfc54b389b0a&wx_header=3"
+
+    - name: "国漫二次元 - 动漫美女"
+      url: "https://mp.weixin.qq.com/mp/homepage?__biz=MzIzNDE5NDA3Nw==&hid=9&sn=6b4948f66db73a05fe100bbf945cf712&scene=1&devicetype=android-33&version=28001f59&lang=zh_CN&nettype=WIFI&ascene=59&session_us=gh_dfc54b389b0a&wx_header=3"
+
+    - name: "国漫二次元 - 国漫美女"
+      url: "https://mp.weixin.qq.com/mp/appmsgalbum?action=getalbum&__biz=MzIzNDE5NDA3Nw==&scene=1&album_id=2641049543576715266&count=3#wechat_redirect"
+
+    - name: "国漫二次元 - 黑丝"
+      url: "https://mp.weixin.qq.com/mp/appmsgalbum?action=getalbum&__biz=MzIzNDE5NDA3Nw==&scene=1&album_id=2651112935570079747&count=3#wechat_redirect"
+
+    - name: "国漫二次元 - 长腿美女"
+      url: "https://mp.weixin.qq.com/mp/appmsgalbum?action=getalbum&__biz=MzIzNDE5NDA3Nw==&scene=1&album_id=2616307804093874177&count=3#wechat_redirect"
+
     - name: "静思有我 - #静思杂谈图文"
       url: "https://mp.weixin.qq.com/mp/appmsgalbum?action=getalbum&__biz=MzkwMDM0NTk3Ng==&scene=1&album_id=2357033074712297473&count=3#wechat_redirect"
 

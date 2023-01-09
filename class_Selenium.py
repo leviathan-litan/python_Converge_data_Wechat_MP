@@ -584,8 +584,8 @@ class class_selenium:
                 # #############################
                 # 进度
                 # #############################
-                progress_percent = int(len(current_article_already_save_as)) / int(wechat_MP_Tag_num)
-                print("################## 进度：%s" % progress_percent)
+                progress_percent = int(len(current_article_already_save_as)) / int(wechat_MP_Tag_num) * 100
+                print("################## 进度：%3.3d" % progress_percent)
                 print("当前TAG的所有文章【%s】" % wechat_MP_Tag_num)
                 print("当前已存储的文章【%s】" % int(len(current_article_already_save_as)))
                 print("----------------------")
