@@ -519,6 +519,8 @@ class class_selenium:
 
         wechat_MP_Tag_Item_ul_item_title_pos_num = 0
 
+        wechat_MP_Tag_page_element_end = False
+
         wechat_MP_Tag_message = wechat_MP_author_name + " | " + wechat_MP_Tag_name
 
         # print("###################################")
@@ -665,6 +667,13 @@ class class_selenium:
                     # 'document.documentElement.scrollTop=2000'
                 )
 
+                # 看看是否捕获到了最终结束元素
+                wechat_MP_Tag_page_element_end = self.browser.find_element(By.CLASS_NAME, "over-line-content")
+
+                if wechat_MP_Tag_page_element_end:
+                    while_enable_wechat_MP_Tag = False
+
+                # While 循环结束阶段
                 while_wechat_MP_Tag_Item_ul_item_title_pos_num_cursor += 1
                 wechat_MP_Tag_Item_ul_item_list = wechat_MP_Tag_Item_ul.find_elements(By.XPATH, 'li')
 
