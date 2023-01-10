@@ -668,7 +668,10 @@ class class_selenium:
                 while_wechat_MP_Tag_Item_ul_item_title_pos_num_cursor += 1
                 wechat_MP_Tag_Item_ul_item_list = wechat_MP_Tag_Item_ul.find_elements(By.XPATH, 'li')
 
-            bar_article.close()
+                # 避免每次都从头爬取比对，如果列表过长，则非常耗费时间
+                wechat_MP_Tag_Item_ul_item_list = wechat_MP_Tag_Item_ul_item_list[int(len(current_article_already_save_as))-1:]
+
+            # bar_article.close()
 
         # 返回阶段
         return data_return

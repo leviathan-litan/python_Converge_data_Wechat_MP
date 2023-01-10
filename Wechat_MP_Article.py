@@ -56,6 +56,7 @@ wechat_mp_collections_item_list = obj_yaml.yaml_param_get_value(
 
 # with alive_bar(len(wechat_mp_collections_item_list), title="标签列表") as bar_tag:
 
+for_wechat_mp_collections_item_list_item_cursor = 1
 for wechat_mp_collections_item_list_item in wechat_mp_collections_item_list:
 
     # time.sleep(3)
@@ -64,7 +65,7 @@ for wechat_mp_collections_item_list_item in wechat_mp_collections_item_list:
     wechat_mp_collections_item_list_item_url = wechat_mp_collections_item_list_item['url']
 
     # Display
-    print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+    print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ %s / %s" % (for_wechat_mp_collections_item_list_item_cursor, len(wechat_mp_collections_item_list)))
     print("标签名称：【%s】" % wechat_mp_collections_item_list_item_name)
     print("--------------------------------")
     print("URL【%s】" % wechat_mp_collections_item_list_item_url)
@@ -107,6 +108,9 @@ for wechat_mp_collections_item_list_item in wechat_mp_collections_item_list:
                 # print(wechat_MP_Tag_Item_ul_item_file_name)
 
                 f.write(wechat_mp_collections_item_list_item_name + "\n")
+
+    # For循环结束阶段
+    for_wechat_mp_collections_item_list_item_cursor += 1
 
     # bar_tag.close()
 
