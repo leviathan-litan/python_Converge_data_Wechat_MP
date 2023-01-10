@@ -57,7 +57,7 @@ class class_selenium:
             split_with="/"
         )
 
-        self.obj_os.execute_os_command_local('mkdir -p %s' % self.path_converge_to_base)
+        self.obj_os.execute_os_command_local('mkdir -p "%s"' % self.path_converge_to_base)
 
         # print("路径 - 存放总路径【%s】" % self.path_converge_to_base)
 
@@ -537,7 +537,7 @@ class class_selenium:
         # print('---------------')
         # print()
 
-        self.obj_os.execute_os_command_local('mkdir -p %s' % path_converge_to_current_tag)
+        self.obj_os.execute_os_command_local('mkdir -p "%s"' % path_converge_to_current_tag)
 
         # 全局列表 - 已经存储过的文章
         # total_tag_already_save_as_file_name = "total_tag_already_save_as.conf"
